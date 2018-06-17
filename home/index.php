@@ -6,8 +6,19 @@ $PAGE_ID = 0;
 $USER = "Richard"; // user is set from initial configuration
 
 $page = new Web_Page($PAGE_ID, $USER);
+$data = new Data_Table("$PAGE_ID-tenants", "tenants-table", $page);
 $page->setTitle("Home");
-$page->addStylesheet("<link href=\"$page->root_path" . "property-manager/assets/css/loader.css\" rel=\"stylesheet\">");
+$page->addStylesheet("
+<style>
+/**
+ * Carousel
+ */
+.carousel-control-prev,
+.carousel-control-next {
+    width: 2%;
+}
+</style>
+");
 $page->printHeader();
 ?>
     <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pb-2 mb-3 border-bottom">
@@ -24,136 +35,75 @@ $page->printHeader();
         </div>
     </div>
 
-    <canvas class="my-4" id="myChart" width="900" height="380"></canvas>
+    <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel" data-pause="hover">
+        <ol class="carousel-indicators">
+            <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li> <!-- month finance overview report -->
+            <li data-target="#carouselExampleIndicators" data-slide-to="1"></li>    <!-- rent report -->
+            <li data-target="#carouselExampleIndicators" data-slide-to="2"></li>    <!-- unit report -->
+            <li data-target="#carouselExampleIndicators" data-slide-to="3"></li>    <!-- tenant overview who's late is highlighted red -->
+            <li data-target="#carouselExampleIndicators" data-slide-to="4"></li>    <!-- Income/Expenditure last 10 years -->
+        </ol>
+        <div class="carousel-inner">
+            <div class="carousel-item active">
+                <h3>Monthly Finance Overview</h3>
+                <img class="d-block w-100" src="data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%22800%22%20height%3D%22400%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20800%20400%22%20preserveAspectRatio%3D%22none%22%3E%3Cdefs%3E%3Cstyle%20type%3D%22text%2Fcss%22%3E%23holder_16404fff51b%20text%20%7B%20fill%3A%23333%3Bfont-weight%3Anormal%3Bfont-family%3AHelvetica%2C%20monospace%3Bfont-size%3A40pt%20%7D%20%3C%2Fstyle%3E%3C%2Fdefs%3E%3Cg%20id%3D%22holder_16404fff51b%22%3E%3Crect%20width%3D%22800%22%20height%3D%22400%22%20fill%3D%22%23555%22%3E%3C%2Frect%3E%3Cg%3E%3Ctext%20x%3D%22277%22%20y%3D%22218.3%22%3EThird%20slide%3C%2Ftext%3E%3C%2Fg%3E%3C%2Fg%3E%3C%2Fsvg%3E" alt="slide">
+            </div>
+            <div class="carousel-item">
+                <h3>Rent Graph</h3>
+                <canvas class="my-4" id="myChart" width="900" height="380"></canvas>
+            </div>
+            <div class="carousel-item">
+                <h3>Properties and Units</h3>
+                <img class="d-block w-100" src="data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%22800%22%20height%3D%22400%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20800%20400%22%20preserveAspectRatio%3D%22none%22%3E%3Cdefs%3E%3Cstyle%20type%3D%22text%2Fcss%22%3E%23holder_16404fff51b%20text%20%7B%20fill%3A%23333%3Bfont-weight%3Anormal%3Bfont-family%3AHelvetica%2C%20monospace%3Bfont-size%3A40pt%20%7D%20%3C%2Fstyle%3E%3C%2Fdefs%3E%3Cg%20id%3D%22holder_16404fff51b%22%3E%3Crect%20width%3D%22800%22%20height%3D%22400%22%20fill%3D%22%23555%22%3E%3C%2Frect%3E%3Cg%3E%3Ctext%20x%3D%22277%22%20y%3D%22218.3%22%3EThird%20slide%3C%2Ftext%3E%3C%2Fg%3E%3C%2Fg%3E%3C%2Fsvg%3E" alt="slide">
+            </div>
+            <div class="carousel-item">
+                <h3>My Tenants</h3>
+                <?php
+                    $query = "SELECT * FROM `tenants` INNER JOIN `units` ON `units_id`=`units`.`id`";
+                    $columns = array(
+                        "first_name",
+                        "middle_name",
+                        "last_name",
+                        "rent",
+                        "address",
+                        "status",
+                        "notes"
+                    );
 
-    <h2>Section title</h2>
-    <div class="table-responsive">
-        <table class="table table-striped table-sm">
-            <thead>
-            <tr>
-                <th>#</th>
-                <th>Header</th>
-                <th>Header</th>
-                <th>Header</th>
-                <th>Header</th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr>
-                <td>1,001</td>
-                <td>Lorem</td>
-                <td>ipsum</td>
-                <td>dolor</td>
-                <td>sit</td>
-            </tr>
-            <tr>
-                <td>1,002</td>
-                <td>amet</td>
-                <td>consectetur</td>
-                <td>adipiscing</td>
-                <td>elit</td>
-            </tr>
-            <tr>
-                <td>1,003</td>
-                <td>Integer</td>
-                <td>nec</td>
-                <td>odio</td>
-                <td>Praesent</td>
-            </tr>
-            <tr>
-                <td>1,003</td>
-                <td>libero</td>
-                <td>Sed</td>
-                <td>cursus</td>
-                <td>ante</td>
-            </tr>
-            <tr>
-                <td>1,004</td>
-                <td>dapibus</td>
-                <td>diam</td>
-                <td>Sed</td>
-                <td>nisi</td>
-            </tr>
-            <tr>
-                <td>1,005</td>
-                <td>Nulla</td>
-                <td>quis</td>
-                <td>sem</td>
-                <td>at</td>
-            </tr>
-            <tr>
-                <td>1,006</td>
-                <td>nibh</td>
-                <td>elementum</td>
-                <td>imperdiet</td>
-                <td>Duis</td>
-            </tr>
-            <tr>
-                <td>1,007</td>
-                <td>sagittis</td>
-                <td>ipsum</td>
-                <td>Praesent</td>
-                <td>mauris</td>
-            </tr>
-            <tr>
-                <td>1,008</td>
-                <td>Fusce</td>
-                <td>nec</td>
-                <td>tellus</td>
-                <td>sed</td>
-            </tr>
-            <tr>
-                <td>1,009</td>
-                <td>augue</td>
-                <td>semper</td>
-                <td>porta</td>
-                <td>Mauris</td>
-            </tr>
-            <tr>
-                <td>1,010</td>
-                <td>massa</td>
-                <td>Vestibulum</td>
-                <td>lacinia</td>
-                <td>arcu</td>
-            </tr>
-            <tr>
-                <td>1,011</td>
-                <td>eget</td>
-                <td>nulla</td>
-                <td>Class</td>
-                <td>aptent</td>
-            </tr>
-            <tr>
-                <td>1,012</td>
-                <td>taciti</td>
-                <td>sociosqu</td>
-                <td>ad</td>
-                <td>litora</td>
-            </tr>
-            <tr>
-                <td>1,013</td>
-                <td>torquent</td>
-                <td>per</td>
-                <td>conubia</td>
-                <td>nostra</td>
-            </tr>
-            <tr>
-                <td>1,014</td>
-                <td>per</td>
-                <td>inceptos</td>
-                <td>himenaeos</td>
-                <td>Curabitur</td>
-            </tr>
-            <tr>
-                <td>1,015</td>
-                <td>sodales</td>
-                <td>ligula</td>
-                <td>in</td>
-                <td>libero</td>
-            </tr>
-            </tbody>
-        </table>
+                    $column_names = array(
+                        "First Name",
+                        "Middle Name",
+                        "Last Name",
+                        "Rent",
+                        "Address",
+                        "Status",
+                        "Notes"
+                    );
+
+                    $data->createTableFromQuery($query, $columns, $column_names, $data->table_id);
+                ?>
+            </div>
+            <div class="carousel-item">
+                <h3>Income/Expenditure Last Decade</h3>
+                <img class="d-block w-100" src="data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%22800%22%20height%3D%22400%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20800%20400%22%20preserveAspectRatio%3D%22none%22%3E%3Cdefs%3E%3Cstyle%20type%3D%22text%2Fcss%22%3E%23holder_16404fff51b%20text%20%7B%20fill%3A%23333%3Bfont-weight%3Anormal%3Bfont-family%3AHelvetica%2C%20monospace%3Bfont-size%3A40pt%20%7D%20%3C%2Fstyle%3E%3C%2Fdefs%3E%3Cg%20id%3D%22holder_16404fff51b%22%3E%3Crect%20width%3D%22800%22%20height%3D%22400%22%20fill%3D%22%23555%22%3E%3C%2Frect%3E%3Cg%3E%3Ctext%20x%3D%22277%22%20y%3D%22218.3%22%3EThird%20slide%3C%2Ftext%3E%3C%2Fg%3E%3C%2Fg%3E%3C%2Fsvg%3E" alt="slide">
+            </div>
+        </div>
+        <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="sr-only">Previous</span>
+        </a>
+        <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="sr-only">Next</span>
+        </a>
     </div>
 <?php
+$page->addScript("
+    <script>
+        $(document).ready(function() {
+            $('#$PAGE_ID-tenants').DataTable();
+        } );
+    </script>
+");
 $page->printFooter();
 ?>

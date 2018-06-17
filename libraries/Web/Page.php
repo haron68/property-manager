@@ -41,6 +41,12 @@ class Web_Page
     public $stylesheet = "";
 
     /**
+     * Any javaScript that should be appended to the footer to load faster
+     * @var string
+     */
+    public $script = "";
+
+    /**
      * The database handler
      * @var PDO
      */
@@ -56,7 +62,7 @@ class Web_Page
      * value to determine project root path
      * @var string
      */
-    public $root_path = "http://localhost/";
+    public $root_path = "http://localhost/property-manager";
 
     /**
      * User class: 0 - Admin, 1 - User
@@ -135,7 +141,19 @@ class Web_Page
     function addStylesheet($add_stylesheet)
     {
         if (trim($add_stylesheet) != "") {
-            $this->stylesheet .= $add_stylesheet;
+            $this->stylesheet = $add_stylesheet;
+        }
+    }
+
+    /**
+     * Set any stylesheets that need to be loaded in the header.
+     * Must be called before printHeader.
+     * @param $add_script string The stylesheet to load.
+     */
+    function addScript($add_script)
+    {
+        if (trim($add_script) != "") {
+            $this->script .= $add_script;
         }
     }
 
@@ -148,51 +166,55 @@ class Web_Page
         ?>
         <!doctype html>
         <html lang="en">
-        <head>
-            <meta charset="utf-8">
-            <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-            <meta name="description" content="">
-            <meta name="author" content="">
-            <link rel="icon" href="../../../../favicon.ico">
+            <head>
+                <meta charset="utf-8">
+                <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+                <meta name="description" content="">
+                <meta name="author" content="">
+                <link rel="icon" href="<?php echo $this->root_path; ?>/favicon.ico">
 
-            <title><?php echo $this->page_title; ?></title>
+                <title><?php echo $this->page_title; ?></title>
 
-            <!-- Bootstrap core CSS -->
-            <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
-                  integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
-                  crossorigin="anonymous">
-            <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
-                    integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
-                    crossorigin="anonymous"></script>
+                <!-- Bootstrap core CSS -->
+                <link rel="stylesheet" href="<?php echo $this->root_path; ?>/dist/css/bootstrap.min.css" />
 
-            <!-- Custom styles for this template -->
-            <?php echo $this->stylesheet; ?>
-            <link href="<?php echo $this->root_path; ?>property-manager/assets/css/dashboard.css" rel="stylesheet">
-        </head>
+                <!-- Data tables CSS -->
+                <link rel="stylesheet" href="https://cdn.datatables.net/1.10.18/css/dataTables.bootstrap4.min.css" />
 
-        <body onload="pageLoader()">
-        <div id="loader"></div>
-        <?php
-        if ($print_top_nav) {
-            ?>
-            <nav class="navbar navbar-dark sticky-top bg-dark flex-md-nowrap p-0">
-                <a class="navbar-brand col-sm-3 col-md-2 mr-0" href="#">Dad's Properties, Inc</a>
-                <input class="form-control form-control-dark w-100" type="text" placeholder="Search"
-                       aria-label="Search">
-                <!--                    <ul class="navbar-nav px-3">-->
-                <!--                        <li class="nav-item text-nowrap">-->
-                <!--                            <a class="nav-link" href="#">Sign out</a>-->
-                <!--                        </li>-->
-                <!--                    </ul>-->
-            </nav>
-            <?php
-        }
-        ?>
-        <div class="container-fluid animate-bottom">
-        <div class="row">
-        <?php $this->printSidebar($this->page_id, $this->print_sidebar); ?>
-        <main role="main" class="col-md-9 ml-sm-auto col-lg-10 pt-3 px-4 animate-bottom">
-        <?php
+                <!-- Loader CSS -->
+                <link rel="stylesheet" href="<?php echo $this->root_path; ?>/assets/css/loader.css" />
+<!--                <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"-->
+<!--                      integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"-->
+<!--                      crossorigin="anonymous">-->
+
+                <!-- Custom styles for this template -->
+                <?php echo $this->stylesheet; ?>
+                <link href="<?php echo $this->root_path; ?>/assets/css/dashboard.css" rel="stylesheet">
+            </head>
+
+            <body onload="pageLoader()">
+                <div id="loader"></div>
+                <?php
+                if ($print_top_nav) {
+                    ?>
+                    <nav class="navbar navbar-dark sticky-top bg-dark flex-md-nowrap p-0">
+                        <a class="navbar-brand col-sm-3 col-md-2 mr-0" href="#">Dad's Properties, Inc</a>
+                        <input class="form-control form-control-dark w-100" type="text" placeholder="Search"
+                               aria-label="Search">
+                        <!--                    <ul class="navbar-nav px-3">-->
+                        <!--                        <li class="nav-item text-nowrap">-->
+                        <!--                            <a class="nav-link" href="#">Sign out</a>-->
+                        <!--                        </li>-->
+                        <!--                    </ul>-->
+                    </nav>
+                    <?php
+                }
+                ?>
+                <div class="container-fluid animate-bottom">
+                <div class="row">
+                <?php $this->printSidebar($this->page_id, $this->print_sidebar); ?>
+                <main role="main" class="col-md-9 ml-sm-auto col-lg-10 pt-3 px-4 animate-bottom">
+                <?php
     }
 
     /**
@@ -252,42 +274,42 @@ class Web_Page
                     <ul class="nav flex-column">
                         <li class="nav-item">
                             <a class="nav-link <?php echo $active_home; ?>"
-                               href="<?php echo $this->root_path; ?>property-manager/home/">
+                               href="<?php echo $this->root_path; ?>/home/">
                                 <span data-feather="home"></span>
                                 Dashboard <span class="sr-only">(current)</span>
                             </a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link <?php echo $active_products; ?>"
-                               href="<?php echo $this->root_path; ?>property-manager/components/products/">
+                               href="<?php echo $this->root_path; ?>/components/products/">
                                 <span data-feather="shopping-cart"></span>
                                 Products
                             </a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link <?php echo $active_tenants; ?>"
-                               href="<?php echo $this->root_path; ?>property-manager/components/tenants/">
+                               href="<?php echo $this->root_path; ?>/components/tenants/">
                                 <span data-feather="users"></span>
                                 Tenants
                             </a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link <?php echo $active_reports; ?>"
-                               href="<?php echo $this->root_path; ?>property-manager/components/reports/">
+                               href="<?php echo $this->root_path; ?>/components/reports/">
                                 <span data-feather="bar-chart-2"></span>
                                 Reports
                             </a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link <?php echo $active_files; ?>"
-                               href="<?php echo $this->root_path; ?>property-manager/components/files/">
+                               href="<?php echo $this->root_path; ?>/components/files/">
                                 <span data-feather="file"></span>
                                 File Manager
                             </a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link <?php echo $active_settings; ?>"
-                               href="<?php echo $this->root_path; ?>property-manager/components/settings/">
+                               href="<?php echo $this->root_path; ?>/components/settings/">
                                 <span data-feather="settings"></span>
                                 Settings
                             </a>
@@ -328,7 +350,7 @@ class Web_Page
                         </li>
                     </ul>
                 </div>
-                <footer><p class="text-muted">&copy;2018 Haron Arama, version: <?php echo $this->product_version; ?></p></footer>
+                <footer><p class="text-muted">&copy;<?php echo date("Y"); ?> Haron Arama, version: <?php echo $this->product_version; ?></p></footer>
             </nav>
             <?php
         }
@@ -340,72 +362,86 @@ class Web_Page
     function printFooter()
     {
         ?>
-        </main>
-        </div>
-        </div>
+                        </main>
+                    </div>
+                </div>
 
-        <!-- Bootstrap core JavaScript
-        ================================================== -->
-        <!-- Placed at the end of the document so the pages load faster -->
-        <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
-                integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
-                crossorigin="anonymous"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
-                integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
-                crossorigin="anonymous"></script>
+                <!-- Loader -->
+                <script>
+                    var timeOut;
 
-        <!-- Loader -->
-        <script>
-            var timeOut;
-
-            function pageLoader() {
-                timeOut = setTimeout(showPage, 1500);
-            }
-
-            function showPage() {
-                document.getElementById("loader").style.display = "none";
-                document.getElementById("myDiv").style.display = "block";
-            }
-        </script>
-
-        <!-- Icons -->
-        <script src="https://unpkg.com/feather-icons/dist/feather.min.js"></script>
-        <script>
-            feather.replace()
-        </script>
-
-        <!-- Graphs -->
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.1/Chart.min.js"></script>
-        <script>
-            var ctx = document.getElementById("myChart");
-            var myChart = new Chart(ctx, {
-                type: 'line',
-                data: {
-                    labels: ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
-                    datasets: [{
-                        data: [15339, 21345, 18483, 24003, 23489, 24092, 12034],
-                        lineTension: 0,
-                        backgroundColor: 'transparent',
-                        borderColor: '#007bff',
-                        borderWidth: 4,
-                        pointBackgroundColor: '#007bff'
-                    }]
-                },
-                options: {
-                    scales: {
-                        yAxes: [{
-                            ticks: {
-                                beginAtZero: false
-                            }
-                        }]
-                    },
-                    legend: {
-                        display: false,
+                    function pageLoader() {
+                        timeOut = setTimeout(showPage, 1500);
                     }
-                }
-            });
-        </script>
-        </body>
+
+                    function showPage() {
+                        document.getElementById("loader").style.display = "none";
+                        document.getElementById("myDiv").style.display = "block";
+                    }
+                </script>
+
+                <!-- Bootstrap core JavaScript
+                ================================================== -->
+<!--                <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"-->
+<!--                        integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"-->
+<!--                        crossorigin="anonymous"></script>-->
+
+                <!-- Placed at the end of the document so the pages load faster -->
+                <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+                        integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+                        crossorigin="anonymous"></script>
+<!--                <script src="https://code.jquery.com/jquery-3.3.1.js"></script>-->
+                <script src="https://cdn.datatables.net/1.10.18/js/jquery.dataTables.min.js"></script>
+                <script src="https://cdn.datatables.net/1.10.18/js/dataTables.bootstrap4.min.js"></script>
+                <script>window.jQuery || document.write('<script src="<?php echo $this->root_path; ?>/assets/js/vendor/jquery-slim.min.js"><\/script>')</script>
+                <script src="<?php echo $this->root_path; ?>/assets/js/vendor/popper.min.js"></script>
+                <script src="<?php echo $this->root_path; ?>/dist/js/bootstrap.min.js"></script>
+<!--                <script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js"-->
+<!--                        integrity="sha384-DztdAPBWPRXSA/3eYEEUWrWCy7G5KFbe8fFjk5JAIxUYHKkDx6Qin1DkWx51bBrb"-->
+<!--                        crossorigin="anonymous"></script>-->
+<!--                <script src="/assets/js/vendor/holder.min.js"></script>-->
+
+                <!-- Icons -->
+                <script src="https://unpkg.com/feather-icons/dist/feather.min.js"></script>
+                <script>
+                    feather.replace()
+                </script>
+
+                <!-- Graphs -->
+                <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.1/Chart.min.js"></script>
+                <script>
+                    var ctx = document.getElementById("myChart");
+                    var myChart = new Chart(ctx, {
+                        type: 'line',
+                        data: {
+                            labels: ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
+                            datasets: [{
+                                data: [15339, 21345, 18483, 24003, 23489, 24092, 12034],
+                                lineTension: 0,
+                                backgroundColor: 'transparent',
+                                borderColor: '#007bff',
+                                borderWidth: 4,
+                                pointBackgroundColor: '#007bff'
+                            }]
+                        },
+                        options: {
+                            scales: {
+                                yAxes: [{
+                                    ticks: {
+                                        beginAtZero: false
+                                    }
+                                }]
+                            },
+                            legend: {
+                                display: false,
+                            }
+                        }
+                    });
+                </script>
+
+                <!-- Page scripts -->
+            <?php echo $this->script; ?>
+            </body>
         </html>
 
         <?php

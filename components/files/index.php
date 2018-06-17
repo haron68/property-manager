@@ -11,12 +11,11 @@
 include($_SERVER['DOCUMENT_ROOT'] . "/property-manager/include/autoload.php");
 
 // component constants
-$PAGE_ID = 4;
+$PAGE_ID = 5;
 $USER = "Richard"; // user is set from initial configuration
 
 $page = new Web_Page($PAGE_ID, $USER);
 $page->setTitle("File Manager");
-$page->addStylesheet("<link href=\"$page->root_path" . "property-manager/assets/css/loader.css\" rel=\"stylesheet\">");
 $page->printHeader();
 ?>
     <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pb-2 mb-3 border-bottom">
