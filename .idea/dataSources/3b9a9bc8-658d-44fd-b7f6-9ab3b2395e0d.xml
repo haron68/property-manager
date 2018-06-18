@@ -1245,139 +1245,157 @@
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="294" parent="249" name="honorific">
+    <column id="294" parent="249" name="phone">
       <Position>5</Position>
+      <DataType>varchar(255)|0</DataType>
+      <NotNull>1</NotNull>
+      <ColumnKind>normal</ColumnKind>
+    </column>
+    <column id="295" parent="249" name="email">
+      <Position>6</Position>
+      <DataType>varchar(255)|0</DataType>
+      <NotNull>1</NotNull>
+      <ColumnKind>normal</ColumnKind>
+    </column>
+    <column id="296" parent="249" name="honorific">
+      <Position>7</Position>
       <DataType>enum(&apos;Mr.&apos;, &apos;Mrs.&apos;, &apos;Ms.&apos;, &apos;Mx.&apos;, &apos;Dr.&apos;, &apos;Prof.&apos;, &apos;Ind.&apos;, &apos;Misc.&apos;)|0</DataType>
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="295" parent="249" name="pronoun">
-      <Position>6</Position>
-      <DataType>enum(&apos;array(&quot;he&quot;, &quot;him&quot;, &quot;his&quot;)&apos;, &apos;array(&quot;she&quot;, &quot;her&quot;, &quot;hers&quot;)&apos;, &apos;array(&quot;they&quot;, &quot;them&quot;, &quot;their&quot;)&apos;, &apos;&apos;)|0</DataType>
+    <column id="297" parent="249" name="pronoun">
+      <Position>8</Position>
+      <DataType>enum(&apos;a:3:{i:0;s:2:&quot;he&quot;;i:1;s:3:&quot;him&quot;;i:2;s:3:&quot;his&quot;;}&apos;, &apos;a:3:{i:0;s:2:&quot;she&quot;;i:1;s:3:&quot;her&quot;;i:2;s:3:&quot;her&apos;&apos;s&quot;;}&apos;, &apos;a:3:{i:0;s:2:&quot;they&quot;;i:1;s:3:&quot;them&quot;;i:2;s:3:&quot;their&quot;;}&apos;, &apos;&apos;)|0</DataType>
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="296" parent="249" name="gender">
-      <Position>7</Position>
+    <column id="298" parent="249" name="gender">
+      <Position>9</Position>
       <DataType>enum(&apos;Male&apos;, &apos;Female&apos;, &apos;Non-conforming&apos;, &apos;&apos;)|0</DataType>
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="297" parent="249" name="income">
-      <Position>8</Position>
+    <column id="299" parent="249" name="income">
+      <Position>10</Position>
       <DataType>int(255)|0</DataType>
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="298" parent="249" name="rent">
-      <Position>9</Position>
+    <column id="300" parent="249" name="rent">
+      <Position>11</Position>
       <DataType>decimal(7,2)|0</DataType>
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="299" parent="249" name="status">
-      <Position>10</Position>
+    <column id="301" parent="249" name="payment_status">
+      <Position>12</Position>
       <DataType>enum(&apos;Paid&apos;, &apos;Late&apos;, &apos;Late &gt; 1 week&apos;, &apos;Delinquent &gt; 1 month&apos;)|0</DataType>
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="300" parent="249" name="units_id">
-      <Position>11</Position>
+    <column id="302" parent="249" name="status">
+      <Position>13</Position>
+      <DataType>enum(&apos;Active&apos;, &apos;Inactive&apos;, &apos;&apos;, &apos;&apos;)|0</DataType>
+      <NotNull>1</NotNull>
+      <ColumnKind>normal</ColumnKind>
+    </column>
+    <column id="303" parent="249" name="units_id">
+      <Position>14</Position>
       <DataType>int(255)|0</DataType>
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="301" parent="249" name="reports_id">
-      <Position>12</Position>
+    <column id="304" parent="249" name="reports_id">
+      <Position>15</Position>
       <DataType>varchar(255)|0</DataType>
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="302" parent="249" name="products_id">
-      <Position>13</Position>
+    <column id="305" parent="249" name="products_id">
+      <Position>16</Position>
       <DataType>varchar(255)|0</DataType>
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="303" parent="249" name="notes">
-      <Position>14</Position>
+    <column id="306" parent="249" name="notes">
+      <Position>17</Position>
       <DataType>varchar(255)|0</DataType>
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <key id="304" parent="249" name="PRIMARY">
+    <key id="307" parent="249" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <ColNames>id</ColNames>
       <Primary>1</Primary>
     </key>
-    <column id="305" parent="250" name="id">
+    <column id="308" parent="250" name="id">
       <Position>1</Position>
       <DataType>int(255)|0</DataType>
       <NotNull>1</NotNull>
       <SequenceIdentity>1</SequenceIdentity>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="306" parent="250" name="properties_id">
+    <column id="309" parent="250" name="properties_id">
       <Position>2</Position>
       <DataType>int(255)|0</DataType>
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="307" parent="250" name="tenants_id">
+    <column id="310" parent="250" name="tenants_id">
       <Position>3</Position>
       <DataType>varchar(255)|0</DataType>
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="308" parent="250" name="products_id">
+    <column id="311" parent="250" name="products_id">
       <Position>4</Position>
       <DataType>varchar(255)|0</DataType>
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="309" parent="250" name="name">
+    <column id="312" parent="250" name="name">
       <Position>5</Position>
       <DataType>varchar(255)|0</DataType>
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="310" parent="250" name="address">
+    <column id="313" parent="250" name="address">
       <Position>6</Position>
       <DataType>varchar(255)|0</DataType>
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="311" parent="250" name="rental_status">
+    <column id="314" parent="250" name="rental_status">
       <Position>7</Position>
       <DataType>enum(&apos;Rented&apos;, &apos;Vacant&apos;, &apos;&apos;, &apos;&apos;)|0</DataType>
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="312" parent="250" name="rent_price">
+    <column id="315" parent="250" name="rent_price">
       <Position>8</Position>
       <DataType>decimal(7,2)|0</DataType>
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="313" parent="250" name="notes">
+    <column id="316" parent="250" name="notes">
       <Position>9</Position>
       <DataType>varchar(255)|0</DataType>
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <key id="314" parent="250" name="PRIMARY">
+    <key id="317" parent="250" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <ColNames>id</ColNames>
       <Primary>1</Primary>
     </key>
-    <column id="315" parent="251" name="id">
+    <column id="318" parent="251" name="id">
       <Position>1</Position>
       <DataType>int(255)|0</DataType>
       <NotNull>1</NotNull>
       <SequenceIdentity>1</SequenceIdentity>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <key id="316" parent="251" name="PRIMARY">
+    <key id="319" parent="251" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <ColNames>id</ColNames>
       <Primary>1</Primary>
