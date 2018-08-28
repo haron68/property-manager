@@ -136,7 +136,6 @@ class Data_Table
                         }
 
                         if ($allow_table_action) {
-                            $eid = $_GET['eid'] = $row_id;
                             echo "<td>
                                     <!-- Action dropdown button -->
                                     <div class=\"btn-group\">

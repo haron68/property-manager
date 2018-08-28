@@ -90,7 +90,7 @@ class Web_Page
      * @param $user
      * @param $print_sidebar
      */
-    function __construct($page_id, $user, $page_title = "Dad's Property Manager", $print_sidebar = true)
+    function __construct($page_id, $user, $page_title = "Property Manager", $print_sidebar = true)
     {
         $this->page_title = $page_title;
         $this->print_sidebar = $print_sidebar;
@@ -102,6 +102,14 @@ class Web_Page
         $this->user = $user;
 
         $this->page_id = $page_id;
+
+        $select_query = "SELECT COUNT(payment_status) FROM tenants WHERE payment_status != 'Paid'";
+        $result = $this->db->query($select_query);
+        $row    = $result->fetch(PDO::FETCH_ASSOC);
+        $count = $row['COUNT(payment_status)'];
+        if ($count > 0) {
+            mail("arama006@umn.edu", "Late renter's notice!", wordwrap("There are currently $count tenants with late rents! Go back to the Property Manager to view this issue!", 70));
+        }
     }
 
     /**
@@ -198,7 +206,7 @@ class Web_Page
                 if ($print_top_nav) {
                     ?>
                     <nav class="navbar navbar-dark sticky-top bg-dark flex-md-nowrap p-0">
-                        <a class="navbar-brand col-sm-3 col-md-2 mr-0" href="#">Dad's Properties, Inc</a>
+                        <a class="navbar-brand col-sm-3 col-md-2 mr-0" href="#">Properties Manager</a>
                         <input class="form-control form-control-dark w-100" type="text" placeholder="Search"
                                aria-label="Search">
                         <!--                    <ul class="navbar-nav px-3">-->

@@ -77,9 +77,9 @@ if (isset($_GET['id'])) {
                     "Last Name",
                     "Rent",
                     "Address",
-                    "Rental Status",
+                    "Payment Status",
                     "Notes",
-                    "Actions"
+                    "Action"
                 );
 
                 $data->createTableFromQuery($query, $columns, $column_names, true, $data->table_id);

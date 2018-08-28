@@ -56,14 +56,14 @@ if (isset($_GET['id'])) {
             <div class="carousel-item active">
                 <h3>Properties and Units</h3>
                 <?php
-                $query = "SELECT * FROM `units`";
+                $query = "SELECT *, COUNT(t.id) FROM units AS u JOIN tenants AS t ON t.units_id = u.id";
                 $columns = array(
                     "id",
                     "name",
                     "address",
                     "rental_status",
                     "rent_price",
-                    "tenants_id",
+                    "COUNT(t.id)",
                     "notes"
                 );
 
@@ -73,7 +73,7 @@ if (isset($_GET['id'])) {
                     "Address",
                     "Rental Status",
                     "Rent Price",
-                    "Tenants",
+                    "Renters",
                     "Notes",
                     "Actions"
                 );
