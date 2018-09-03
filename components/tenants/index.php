@@ -16,6 +16,11 @@ $USER = "Richard"; // user is set from initial configuration
 
 $page = new Web_Page($PAGE_ID, $USER);
 $data = new Data_Table("$PAGE_ID-tenants", "tenants-table", $page);
+
+if (isset($_POST['submit'])) {
+    $data->addTenant($_POST['firstName'], $_POST['middleName'], $_POST['lastName'], $_POST['phone'], $_POST['email'], $_POST['honorific'], $_POST['gender'], $_POST['income'], $_POST['rent'], "Paid", "Active", $_POST['units'], $_POST['notes']);
+}
+
 $page->setTitle("Tenants");
 $page->addStylesheet("
 <style>
@@ -79,6 +84,11 @@ if (isset($_GET['id'])) {
                         </div>
 
                         <div class="form-label-group">
+                            <input type="email" name="email" id="email" class="form-control" placeholder="Email Address">
+                            <label for="email">Email Address</label>
+                        </div>
+
+                        <div class="form-label-group">
                             <input type="text" name="phone" id="phone" class="form-control" placeholder="Phone">
                             <label for="phone">Phone</label>
                         </div>
@@ -118,10 +128,14 @@ if (isset($_GET['id'])) {
                         <?php
                             $data->selectProperty("property", "property");
                         ?>
+                        <hr>
+                        <label for="notes">Notes</label>
+
+                        <textarea class="form-control" id="notes" name="notes"></textarea>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                        <input type="submit" class="btn btn-primary">
+                        <input type="submit" name="submit" class="btn btn-primary">
                     </div>
                 </div>
             </div>
@@ -138,7 +152,7 @@ if (isset($_GET['id'])) {
             <div class="carousel-item active">
                 <h3>My Tenants</h3>
                 <?php
-                $query = "SELECT t.id, t.first_name, t.middle_name, t.last_name, t.rent, u.name, p.address, t.payment_status, t.notes 
+                $query = "SELECT t.id, t.first_name, t.middle_name, t.last_name, t.rent, u.name as uname, p.name as pname, p.address, t.payment_status, t.notes 
                           FROM `tenants` t 
                           INNER JOIN `units` u 
                           ON t.`units_id`=u.`id`
@@ -152,6 +166,8 @@ if (isset($_GET['id'])) {
                     "middle_name",
                     "last_name",
                     "rent",
+                    "uname",
+                    "pname",
                     "address",
                     "payment_status",
                     "notes"
@@ -163,6 +179,8 @@ if (isset($_GET['id'])) {
                     "Middle Name",
                     "Last Name",
                     "Rent",
+                    "Unit Name",
+                    "Property Name",
                     "Address",
                     "Payment Status",
                     "Notes",

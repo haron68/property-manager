@@ -200,7 +200,7 @@ class Data_Table
      */
     function addTenant($first_name, $middle_name, $last_name, $phone, $email, $honorific, $gender, $income, $rent, $payment_status, $status, $units_id, $notes)
     {
-        if (isset($first_name, $middle_name, $last_name, $phone, $email, $honorific, $status, $gender, $income, $rent, $payment_status, $status, $units_id, $notes)) {
+        if (isset($first_name, $last_name, $phone, $email, $honorific, $gender, $income)) {
             $first_name = addslashes($first_name);
             $middle_name = addslashes($middle_name);
             $last_name = addslashes($last_name);
