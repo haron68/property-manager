@@ -284,7 +284,7 @@ class Web_Page
                             <a class="nav-link <?php echo $active_home; ?>"
                                href="<?php echo $this->root_path; ?>/home/">
                                 <span data-feather="home"></span>
-                                Dashboard <span class="sr-only">(current)</span>
+                                Dashboard
                             </a>
                         </li>
                         <li class="nav-item">

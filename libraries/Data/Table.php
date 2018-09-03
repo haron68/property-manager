@@ -173,64 +173,154 @@ class Data_Table
      * @param $id
      * @param $columns // an array of columns to render
      * @param $column_names // names to be rendered in table headers
-//     * @param $table_id // table id that will be used to implement javaScripts for table
+     * @param $table_id // table id that will be used to implement javaScripts for table
      * @param $add_class // add extra classes to table
      */
 //    function editDataTableEntry($id, $columns, $column_names, $add_class); implementation required
 
     /**
+     * Add tenants to database
+     *
+     * @param $first_name
+     * @param $middle_name
+     * @param $last_name
+     * @param $phone
+     * @param $email
+     * @param $honorific
+     * @param $gender
+     * @param $income
+     * @param $rent
+     * @param $payment_status
+     * @param $status
+     * @param $units_id
+     * @param $notes
+     *
+     * @return boolean
+     *
+     */
+    function addTenant($first_name, $middle_name, $last_name, $phone, $email, $honorific, $gender, $income, $rent, $payment_status, $status, $units_id, $notes)
+    {
+        if (isset($first_name, $middle_name, $last_name, $phone, $email, $honorific, $status, $gender, $income, $rent, $payment_status, $status, $units_id, $notes)) {
+            $first_name = addslashes($first_name);
+            $middle_name = addslashes($middle_name);
+            $last_name = addslashes($last_name);
+            $notes = addslashes($notes);
+
+            $insert_query = "INSERT 
+                             INTO tenants
+                              (first_name, middle_name, last_name, phone, email, honorific, gender, income, rent, payment_status, status, units_id, notes)
+                             VALUES 
+                              ('$first_name', '$middle_name', '$last_name', '$phone', '$email', '$honorific', '$gender', '$income', '$rent', '$payment_status', '$status', '$units_id', '$notes') ";
+
+            $result = $this->db->query($insert_query);
+            if ($result) {
+                return true;
+            } else {
+                return false;
+            }
+        } else {
+            return false;
+        }
+    }
+
+    /**
      * Delete tenants from database and other information stored about them
      *
      * @param $id
-     * @param $units_table // units
-     * @param $products_table // products
-     * @param $rent_payments_table // rent_payments
      * @param $deactivate // boolean
      */
-    function deleteTenant($id, $deactivate=false, $units_table=false, $products_table=false, $rent_payments_table=false)
+    function deleteTenant($id, $deactivate = false)
     {
-        $select_q = "SELECT * FROM `tenants` WHERE id=$id";
-        $result = $this->page->db->query($select_q);
-        $row = $result->fetch(PDO::FETCH_ASSOC);
-        $tenant_id = $row['id'];
-        $unit_id = $row['units_id'];
-
         if ($deactivate) {
-            if ($units_table) {
-                $select_units_q = "SELECT `tenants_id` FROM `units` WHERE `id`=$tenant_id";
-                $result = $this->page->db->query($select_units_q);
-                $row = $result->fetch(PDO::FETCH_ASSOC);
-
-                $tenants = unserialize($row['tenants_id']);
-                if (!empty($tenants)) {
-                    for ($i = 0; $i < sizeof($tenants); $i++) {
-                        if ($tenants[$i] == $tenant_id) {
-                            unset($tenants[$i]);
-                        }
-                    }
-                    $tenants = serialize($tenants);
-
-                    $update_units_q = "UPDATE `units` SET `tenants_id` = '$tenants' WHERE `units`.id = $unit_id";
-
-                    $this->page->db->query($update_units_q);
-                }
-            }
-
-            if ($products_table) {
-                $update_units_q = "UPDATE `tenants` SET `products_id` = '' WHERE id = $tenant_id";
-                $this->page->db->query($update_units_q);
-
-                $del_products_q = "DELETE FROM `products` WHERE `tenants_id`=$tenant_id";
-                $this->page->db->query($del_products_q);
-            }
-
-            $update_tenants_query = "UPDATE `tenants` SET `status` = 'Inactive' WHERE `tenants`.`id` = $id";
+            $update_tenants_query = "UPDATE `tenants` SET `status` = 'Inactive', `units_id` = NULL WHERE `tenants`.`id` = $id";
 
             $this->page->db->query($update_tenants_query);
 
         } else {
             $query = "DELETE FROM `tenants` WHERE `id`=$id";
             $this->page->db->query($query);
+        }
+    }
+
+    /**
+     * Dropdown form element generator for properties
+     *
+     * @param $tenant_id // tenant id
+     * @param $name
+     * @param $id
+     */
+    function selectProperty($name = "property", $id = "property")
+    {
+        $query = "SELECT * FROM properties";
+
+        $result = $this->db->query($query);
+        if ($result) {
+            $rows = $result->fetchAll(PDO::FETCH_ASSOC);
+            $count = count($rows);
+            ?>
+            <label for="property">Property</label>
+
+            <div class="form-label-group">
+                <select name="<?php echo $name; ?>"
+                        id="<?php echo $id; ?>"
+                        class="form-control"
+                        onchange="
+                                var propertyCount = <?php echo $count; ?>;
+                                var property = document.getElementById('<?php echo $id; ?>');
+                                var unit = property.value.toString();
+                                $('#' + unit).toggleClass('d-none', '');
+                                for (var i = 1; i <= propertyCount; i++) {
+                                    var hasClass = $('#' + i.toString()).hasClass('d-none');
+                                    if (!hasClass && (i.toString() !== unit)) {
+                                        $('#' + i).addClass('d-none');
+                                    }
+                                }
+                                "
+                >
+                    <?php
+                    echo "<option value='0'></option>";
+                    foreach ($rows as $row) {
+                        $value = $row['id'];
+                        $display = $row['name'];
+                        echo "<option value='$value'>$display</option>";
+                    }
+                    ?>
+                </select>
+            </div>
+
+            <label for="units">Units</label>
+            <?php
+            $result = $this->db->query($query);
+
+            if ($result) {
+                $rows = $result->fetchAll(PDO::FETCH_ASSOC);
+                foreach ($rows as $row) {
+                    $id = $row['id'];
+                    ?>
+                    <div id="<?php echo $id; ?>" class="d-none form-label-group">
+                        <select name="units" class="form-control">
+                            <?php
+                                $units_query = "SELECT u.id, u.name 
+                                                FROM units u 
+                                                JOIN properties p 
+                                                ON p.id = u.properties_id
+                                                WHERE p.id = $id";
+
+                                $result = $this->db->query($units_query);
+                                if ($result) {
+                                    $urows = $result->fetchAll(PDO::FETCH_ASSOC);
+                                    foreach ($urows as $urow) {
+                                        $value = $urow['id'];
+                                        $display = $urow['name'];
+                                        echo "<option value='$value'>$display</option>";
+                                    }
+                                }
+                            ?>
+                        </select>
+                    </div>
+                    <?php
+                }
+            }
         }
     }
 }

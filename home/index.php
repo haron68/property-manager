@@ -30,7 +30,8 @@ if (isset($_GET['id'])) {
         <h1 class="h2">Dashboard</h1>
         <div class="btn-toolbar mb-2 mb-md-0">
             <div class="btn-group mr-2">
-                <button class="btn btn-sm btn-outline-secondary">Share</button>
+                <button class="btn btn-sm btn-outline-secondary">Add Property</button>
+                <button class="btn btn-sm btn-outline-secondary">Import</button>
                 <button class="btn btn-sm btn-outline-secondary">Export</button>
             </div>
             <button class="btn btn-sm btn-outline-secondary dropdown-toggle">
@@ -56,10 +57,16 @@ if (isset($_GET['id'])) {
             <div class="carousel-item active">
                 <h3>Properties and Units</h3>
                 <?php
-                $query = "SELECT *, COUNT(t.id) FROM units AS u JOIN tenants AS t ON t.units_id = u.id";
+                $query = "SELECT *, p.name AS pname, u.name as uname, COUNT(t.id) 
+                          FROM units AS u
+                          JOIN properties AS p 
+                          ON p.id = u.properties_id
+                          JOIN tenants AS t 
+                          ON t.units_id = u.id";
                 $columns = array(
                     "id",
-                    "name",
+                    "uname",
+                    "pname",
                     "address",
                     "rental_status",
                     "rent_price",
@@ -69,11 +76,12 @@ if (isset($_GET['id'])) {
 
                 $column_names = array(
                     "ID",
-                    "Name",
+                    "Unit Name",
+                    "Property Name",
                     "Address",
                     "Rental Status",
                     "Rent Price",
-                    "Renters",
+                    "Renter(s)",
                     "Notes",
                     "Actions"
                 );
@@ -88,7 +96,13 @@ if (isset($_GET['id'])) {
             <div class="carousel-item">
                 <h3>My Tenants</h3>
                 <?php
-                $query = "SELECT t.id, t.first_name, t.middle_name, t.last_name, t.rent, u.name, u.address, t.payment_status, t.notes FROM `tenants` t INNER JOIN `units` u ON t.`units_id`=u.`id` AND t.`status`='Active'";
+                $query = "SELECT t.id, t.first_name, t.middle_name, t.last_name, t.rent, u.name, p.address, t.payment_status, t.notes 
+                          FROM `tenants` t 
+                          INNER JOIN `units` u 
+                          ON t.`units_id`=u.`id`
+                          JOIN properties p
+                          ON p.id = u.properties_id
+                          AND t.`status`='Active'";
                 $columns = array(
                     "id",
                     "first_name",

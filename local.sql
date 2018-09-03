@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Aug 28, 2018 at 05:48 PM
+-- Generation Time: Sep 03, 2018 at 06:05 AM
 -- Server version: 10.1.34-MariaDB
 -- PHP Version: 7.0.31
 
@@ -77,8 +77,15 @@ CREATE TABLE `properties` (
   `name` varchar(255) NOT NULL,
   `address` varchar(255) NOT NULL,
   `value` decimal(7,2) NOT NULL,
-  `notes` varchar(255) NOT NULL
+  `notes` varchar(255) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `properties`
+--
+
+INSERT INTO `properties` (`id`, `name`, `address`, `value`, `notes`) VALUES
+(1, 'Property 1', '123 Main St. NW, Rochester, MN, 55901', '1500.00', NULL);
 
 -- --------------------------------------------------------
 
@@ -135,7 +142,7 @@ CREATE TABLE `tenants` (
 
 INSERT INTO `tenants` (`id`, `first_name`, `middle_name`, `last_name`, `phone`, `email`, `honorific`, `gender`, `income`, `rent`, `payment_status`, `status`, `units_id`, `notes`) VALUES
 (1, 'John', 'M', 'Test', '507-123-4567', 'jtest@test.com', 'Mr.', 'Male', '34000.00', '750.00', 'Paid', 'Active', 1, NULL),
-(2, 'Jane', 'R', 'Test', '507-321-7654', 'jatest@test.com', 'Mrs.', 'Female', '35000.00', '750.00', 'Paid', 'Active', 1, NULL);
+(2, 'Jane', 'R', 'Test', '507-321-7654', 'jatest@test.com', 'Mrs.', 'Female', '35000.00', '750.00', 'Paid', 'Inactive', 0, NULL);
 
 -- --------------------------------------------------------
 
@@ -147,7 +154,6 @@ CREATE TABLE `units` (
   `id` int(11) NOT NULL,
   `properties_id` int(11) NOT NULL,
   `name` varchar(255) NOT NULL,
-  `address` varchar(255) NOT NULL,
   `rental_status` enum('Occupied','Vacant','') NOT NULL,
   `rent_price` decimal(7,2) NOT NULL,
   `notes` varchar(255) DEFAULT NULL
@@ -157,8 +163,8 @@ CREATE TABLE `units` (
 -- Dumping data for table `units`
 --
 
-INSERT INTO `units` (`id`, `properties_id`, `name`, `address`, `rental_status`, `rent_price`, `notes`) VALUES
-(1, 1, 'Unit 1', '123 Main St. NW, Rochester, MN, 55901', 'Occupied', '1500.00', NULL);
+INSERT INTO `units` (`id`, `properties_id`, `name`, `rental_status`, `rent_price`, `notes`) VALUES
+(1, 1, 'Unit 1', 'Occupied', '1500.00', NULL);
 
 -- --------------------------------------------------------
 
@@ -254,7 +260,7 @@ ALTER TABLE `products`
 -- AUTO_INCREMENT for table `properties`
 --
 ALTER TABLE `properties`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `rent_payments`

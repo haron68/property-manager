@@ -1135,7 +1135,6 @@
     <column id="275" parent="245" name="notes">
       <Position>5</Position>
       <DataType>varchar(255)|0</DataType>
-      <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
     <key id="276" parent="245" name="PRIMARY">
@@ -1311,41 +1310,35 @@
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="305" parent="249" name="address">
+    <column id="305" parent="249" name="rental_status">
       <Position>4</Position>
-      <DataType>varchar(255)|0</DataType>
-      <NotNull>1</NotNull>
-      <ColumnKind>normal</ColumnKind>
-    </column>
-    <column id="306" parent="249" name="rental_status">
-      <Position>5</Position>
       <DataType>enum(&apos;Occupied&apos;, &apos;Vacant&apos;, &apos;&apos;)|0</DataType>
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="307" parent="249" name="rent_price">
-      <Position>6</Position>
+    <column id="306" parent="249" name="rent_price">
+      <Position>5</Position>
       <DataType>decimal(7,2)|0</DataType>
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="308" parent="249" name="notes">
-      <Position>7</Position>
+    <column id="307" parent="249" name="notes">
+      <Position>6</Position>
       <DataType>varchar(255)|0</DataType>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <key id="309" parent="249" name="PRIMARY">
+    <key id="308" parent="249" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <ColNames>id</ColNames>
       <Primary>1</Primary>
     </key>
-    <column id="310" parent="250" name="id">
+    <column id="309" parent="250" name="id">
       <Position>1</Position>
       <DataType>int(11)|0</DataType>
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <key id="311" parent="250" name="PRIMARY">
+    <key id="310" parent="250" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <ColNames>id</ColNames>
       <Primary>1</Primary>

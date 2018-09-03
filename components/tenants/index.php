@@ -38,7 +38,8 @@ if (isset($_GET['id'])) {
         <h1 class="h2">Tenants</h1>
         <div class="btn-toolbar mb-2 mb-md-0">
             <div class="btn-group mr-2">
-                <button class="btn btn-sm btn-outline-secondary">Share</button>
+                <button class="btn btn-sm btn-outline-secondary" data-toggle="modal" data-target="#addTenantModal">Add Tenant</button>
+                <button class="btn btn-sm btn-outline-secondary">Import</button>
                 <button class="btn btn-sm btn-outline-secondary">Export</button>
             </div>
             <button class="btn btn-sm btn-outline-secondary dropdown-toggle">
@@ -47,6 +48,85 @@ if (isset($_GET['id'])) {
             </button>
         </div>
     </div>
+
+    <!-- Add Tenant Modal -->
+    <form class="form-group" action="" method="post">
+        <div class="modal fade" id="addTenantModal" tabindex="-1" role="dialog" aria-labelledby="addTenantLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="addTenantLabel">Add a New Tenant</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <h4 class="border-gray border-bottom">Personal Info</h4>
+
+                        <div class="form-label-group">
+                            <input type="text" name="firstName" id="firstName" class="form-control" placeholder="First Name">
+                            <label for="firstName">First Name</label>
+                        </div>
+
+                        <div class="form-label-group">
+                            <input type="text" name="middleName" id="middleName" class="form-control" placeholder="Middle Name">
+                            <label for="middleName">Middle Name</label>
+                        </div>
+
+                        <div class="form-label-group">
+                            <input type="text" name="lastName" id="lastName" class="form-control" placeholder="Last Name">
+                            <label for="lastName">Last Name</label>
+                        </div>
+
+                        <div class="form-label-group">
+                            <input type="text" name="phone" id="phone" class="form-control" placeholder="Phone">
+                            <label for="phone">Phone</label>
+                        </div>
+
+                        <label for="honorific">Honorific</label>
+                        <div class="form-label-group">
+                            <select type="text" name="honorific" id="honorific" class="form-control">
+                                <option value="">None</option>
+                                <option value="Mr.">Mr.</option>
+                                <option value="Mrs.">Mrs.</option>
+                                <option value="Ms.">Ms.</option>
+                            </select>
+                        </div>
+
+                        <label for="gender">Gender</label>
+                        <div class="form-label-group">
+                            <select type="text" name="gender" id="gender" class="form-control">
+                                <option value="">None</option>
+                                <option value="Male">Male</option>
+                                <option value="Female">Female</option>
+                            </select>
+                        </div>
+
+                        <h4 class="border-bottom border-gray">Financial Info</h4>
+
+                        <div class="form-label-group">
+                            <input type="number" min="500" step=".01" name="income" id="income" class="form-control" placeholder="Income">
+                            <label for="income">Income</label>
+                        </div>
+
+                        <div class="form-label-group">
+                            <input type="number" step=".01" name="rent" id="rent" class="form-control" placeholder="Rent">
+                            <label for="rent">Rent</label>
+                        </div>
+
+                        <h4 class="border-bottom border-gray">Property Info</h4>
+                        <?php
+                            $data->selectProperty("property", "property");
+                        ?>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <input type="submit" class="btn btn-primary">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
 
     <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel" data-pause="hover">
         <ol class="carousel-indicators">
@@ -58,7 +138,14 @@ if (isset($_GET['id'])) {
             <div class="carousel-item active">
                 <h3>My Tenants</h3>
                 <?php
-                $query = "SELECT t.id, t.first_name, t.middle_name, t.last_name, t.rent, u.address, t.payment_status, t.notes FROM `tenants` t INNER JOIN `units` u ON t.`units_id`=u.`id` AND t.`status`='Active'";
+                $query = "SELECT t.id, t.first_name, t.middle_name, t.last_name, t.rent, u.name, p.address, t.payment_status, t.notes 
+                          FROM `tenants` t 
+                          INNER JOIN `units` u 
+                          ON t.`units_id`=u.`id`
+                          JOIN properties p
+                          ON p.id = u.properties_id
+                          AND t.`status`='Active'";
+
                 $columns = array(
                     "id",
                     "first_name",
